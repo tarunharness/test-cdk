@@ -62,7 +62,7 @@ func NewTestCdkStack(scope constructs.Construct, id string, props *TestCdkStackP
 		  exports.handler = async function(event) {
 			return {
 			  statusCode: 200,
-			  body: JSON.stringify('Hello Harnessian Tarun Israni! What a lovely day'),
+			  body: JSON.stringify('Hello world!'),
 			};
 		  };
 		`)),
