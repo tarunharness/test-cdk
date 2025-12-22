@@ -111,7 +111,7 @@ func env() *awscdk.Environment {
 	//---------------------------------------------------------------------------
 	return &awscdk.Environment{
 		Account: jsii.String("665453390054"),
-		Region:  jsii.String("us-east-1"),
+		Region:  jsii.String("eu-west-1"),
 	}
 
 	// Uncomment if you know exactly what account and region you want to deploy
