@@ -4,7 +4,7 @@ import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 
-	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
@@ -76,6 +76,16 @@ func NewTestCdkStack(scope constructs.Construct, id string, props *TestCdkStackP
 	// Define a CloudFormation output for your URL
 	awscdk.NewCfnOutput(stack, jsii.String("myFunctionUrlOutput"), &awscdk.CfnOutputProps{
 		Value: myFunctionUrl.Url(),
+	})
+
+	// The code that defines your stack goes here
+	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
+		// Optional: Specify a globally unique bucket name. If left out, CDK generates one.
+		BucketName: jsii.String("test-cdk-bucket-01"),
+
+		// Optional: Define a removal policy. DESTROY deletes the bucket when the stack is destroyed.
+		// Be careful with this in production for non-empty buckets.
+		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 	})
 
 	return stack
