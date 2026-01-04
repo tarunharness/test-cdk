@@ -88,6 +88,16 @@ func NewTestCdkStack(scope constructs.Construct, id string, props *TestCdkStackP
 		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 	})
 
+	// The code that defines your stack goes here
+	awss3.NewBucket(stack, jsii.String("MySecondBucket"), &awss3.BucketProps{
+		// Optional: Specify a globally unique bucket name. If left out, CDK generates one.
+		BucketName: jsii.String("test-cdk-bucket-03"),
+
+		// Optional: Define a removal policy. DESTROY deletes the bucket when the stack is destroyed.
+		// Be careful with this in production for non-empty buckets.
+		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
+	})
+
 	return stack
 }
 
