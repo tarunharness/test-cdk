@@ -20,39 +20,6 @@ func NewTestCdkStack(scope constructs.Construct, id string, props *TestCdkStackP
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	// The code that defines your stack goes here
-
-	// example resource
-	// awssqs.NewQueue(stack, jsii.String("TestCdkQueue"), &awssqs.QueueProps{
-	// VisibilityTimeout: awscdk.Duration_Seconds(jsii.Number(300)),
-	// })
-
-	// 1. Define the IAM Role for the Lambda function
-	// _ = awsiam.NewRole(stack, jsii.String("MyCustomLambdaRole"), &awsiam.RoleProps{
-	// 	AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
-	// 	ManagedPolicies: &[]awsiam.IManagedPolicy{
-	// 		awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")),
-	// 	},
-	// })
-
-	// Reference an existing IAM role by its ARN
-
-	// existingRoleArn := "arn:aws:iam::665453390054:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AWSPowerUserAccess_6b6c4ac271ad17fb" // Replace with your role ARN
-	// existingRole := awsiam.Role_FromRoleArn(stack, jsii.String("ExistingLambdaRole"), jsii.String(existingRoleArn), nil)
-	// existingRole.AttachInlinePolicy(awsiam.Policy_FromPolicyName(stack, jsii.String("ExistingLambdaPolicy"), nil))
-
-	// Create role:
-
-	// role := awsiam.NewRole(stack, jsii.String("LambdaExecRole"), &awsiam.RoleProps{
-	// 	AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
-	// 	ManagedPolicies: &[]awsiam.IManagedPolicy{
-	// 		awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("PowerUserAccess")),
-	// 	},
-	// })
-
-	// Use role:
-	// Role: role,
-
 	// Define the Lambda function resource
 	myFunction := awslambda.NewFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.FunctionProps{
 		Runtime: awslambda.Runtime_NODEJS_20_X(), // Provide any supported Node.js runtime
@@ -98,6 +65,16 @@ func NewTestCdkStack(scope constructs.Construct, id string, props *TestCdkStackP
 		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 	})
 
+	// The code that defines your stack goes here
+	awss3.NewBucket(stack, jsii.String("MyThirdBucket"), &awss3.BucketProps{
+		// Optional: Specify a globally unique bucket name. If left out, CDK generates one.
+		BucketName: jsii.String("test-cdk-bucket-04"),
+
+		// Optional: Define a removal policy. DESTROY deletes the bucket when the stack is destroyed.
+		// Be careful with this in production for non-empty buckets.
+		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
+	})
+
 	return stack
 }
 
@@ -105,12 +82,6 @@ func main() {
 	defer jsii.Close()
 
 	app := awscdk.NewApp(nil)
-
-	// synth := awscdk.NewDefaultStackSynthesizer(&awscdk.DefaultStackSynthesizerProps{
-	// CloudFormationExecutionRole: jsii.String("arn:aws:iam::665453390054:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_AWSPowerUserAccess_6b6c4ac271ad17fb"),
-	// CloudFormationExecutionRole: jsii.String("arn:aws:iam::665453390054:role/cdk-hnb659fds-deploy-role-665453390054-us-east-1"),
-	// DeployRoleArn:               jsii.String("arn:aws:iam::665453390054:role/cdk-hnb659fds-deploy-role-665453390054-us-east-1"),
-	// })
 
 	NewTestCdkStack(app, "TestCdkStack", &TestCdkStackProps{
 		awscdk.StackProps{
@@ -133,21 +104,4 @@ func env() *awscdk.Environment {
 		Account: jsii.String("665453390054"),
 		Region:  jsii.String("eu-west-1"),
 	}
-
-	// Uncomment if you know exactly what account and region you want to deploy
-	// the stack to. This is the recommendation for production stacks.
-	//---------------------------------------------------------------------------
-	// return &awscdk.Environment{
-	//  Account: jsii.String("123456789012"),
-	//  Region:  jsii.String("us-east-1"),
-	// }
-
-	// Uncomment to specialize this stack for the AWS Account and Region that are
-	// implied by the current CLI configuration. This is recommended for dev
-	// stacks.
-	//---------------------------------------------------------------------------
-	// return &awscdk.Environment{
-	//  Account: jsii.String(os.Getenv("CDK_DEFAULT_ACCOUNT")),
-	//  Region:  jsii.String(os.Getenv("CDK_DEFAULT_REGION")),
-	// }
 }
