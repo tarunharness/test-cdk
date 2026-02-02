@@ -1,0 +1,46 @@
+template:
+  name: Tarun_Test_Pipeline_01
+  identifier: Tarun_Test_Pipeline_01
+  versionLabel: v1
+  type: Pipeline
+  projectIdentifier: Tarun_Test_Project
+  orgIdentifier: default
+  tags: {}
+  spec:
+    stages:
+      - stage:
+          name: teststage
+          identifier: teststage
+          description: ""
+          type: IACM
+          spec:
+            platform:
+              os: Linux
+              arch: Amd64
+            runtime:
+              type: Cloud
+              spec: {}
+            execution:
+              steps:
+                - step:
+                    type: IACMTerraformPlugin
+                    name: init
+                    identifier: init
+                    timeout: 10m
+                    spec:
+                      command: init
+                - step:
+                    type: IACMTerraformPlugin
+                    name: plan
+                    identifier: plan
+                    timeout: 10m
+                    spec:
+                      command: plan
+                - step:
+                    type: IACMTerraformPlugin
+                    name: apply
+                    identifier: apply
+                    timeout: 10m
+                    spec:
+                      command: apply
+          tags: {}
